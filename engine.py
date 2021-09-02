@@ -8,6 +8,7 @@ from enity import Entity
 from game_map import GameMap
 from input_handlers import EventHandler
 
+
 class Engine:
     def __init__(self, entities: Set[Entity], event_handler: EventHandler, game_map: GameMap, player: Entity):
         self.entities = entities
@@ -22,13 +23,15 @@ class Engine:
             if action is None:
                 continue
 
-            if isinstance(action, MovementAction):
-                if self.game_map.tiles["walkable"][self.player.x + action.dx, self.player.y + action.dy]:
-                    self.player.move(dx=action.dx, dy=action.dy)
-
-
-            elif isinstance(action, EscapeAction):
-                raise SystemExit()
+            action.perform(self, self.player)
+            #
+            # if isinstance(action, MovementAction):
+            #     if self.game_map.tiles["walkable"][self.player.x + action.dx, self.player.y + action.dy]:
+            #         self.player.move(dx=action.dx, dy=action.dy)
+            #
+            #
+            # elif isinstance(action, EscapeAction):
+            #     raise SystemExit()
 
     def render(self, console: Console, context: Context) -> None:
         self.game_map.render(console)
